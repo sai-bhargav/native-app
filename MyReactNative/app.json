@@ -4,6 +4,10 @@
     "slug": "MyReactNative",
     "privacy": "public",
     "sdkVersion": "34.0.0",
+    "android":{
+      "package":"com.MyReactNative.Nshorts",
+      "versionCode":1
+    },
     "platforms": [
       "ios",
       "android",
@@ -11,7 +15,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/N-logo.jpg",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -24,7 +28,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+
     }
   }
 }
