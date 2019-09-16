@@ -17,26 +17,36 @@ class Swipe extends Component {
     constructor(props) {
         super(props);
         this.state = { index: 0 };
-        this.position = new Animated.ValueXY();
-        this._panResponder = PanResponder.create({
+        this.animated = new Animated.Value(0);
 
+         this.panResponder = PanResponder.create({
+             onStartShouldSetPanResponder: (evt, gestureState) => true,
 
-          onStartShouldSetPanResponder: (evt, gestureState) => true,
+             onPanResponderMove: (e, gestureState) => {
+                 const { dy } = gestureState;
+                 if(dy < 0) {
+                     this.animated.setValue(dy);
+                 }
+             },
 
-          onPanResponderMove: (evt, gestureState) => {
-            this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
-          },
+             onPanResponderRelease: (e, gestureState) => {
+                 const { dy } = gestureState;
 
-          onPanResponderRelease: (evt, gesture) => {
-              if (gesture.dx > SWIPE_THRESHOLD) {
-                this.forceSwipe('up');
-              } else if (gesture.dx < -SWIPE_THRESHOLD) {
-                this.forceSwipe('down');
-              } else {
-                this.resetPosition();
-              }
-            }
-        });
+                 if(dy < -100) { // Swipe up away
+                     Animated.timing(this.animated, {
+                         toValue: -400,
+                         duration: 150
+                     }).start();
+                     this.props.hideModal();
+                     this.doSomething();
+                 } else if(dy > -100 && dy < 0) { // Swipe back to initial position
+                     Animated.timing(this.animated, {
+                         toValue: 0,
+                         duration: 150
+                     }).start();
+                 }
+             }
+         })
       }
 
     forceSwipe(direction) {
@@ -111,6 +121,11 @@ class Swipe extends Component {
            index: 0
          })
        }
+     }
+
+
+     componentWillMount() {
+
      }
 
   getCardStyle() {
